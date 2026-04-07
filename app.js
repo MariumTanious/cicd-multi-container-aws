@@ -1,51 +1,46 @@
 const express = require('express');
 const os = require('os');
-const mongoose = require('mongoose');
 
 const app = express();
 const PORT = 3000;
 
-// Connect to MongoDB
-const mongoURL = process.env.MONGO_URL || 'mongodb://mongo:27017/tasksdb';
-mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true });
+// Tasks in-memory (بدون MongoDB دلوقتي)
+const tasks = [
+  { id: 1, name: 'Milk',          status: 'done'    },
+  { id: 2, name: 'Eggs',          status: 'done'    },
+  { id: 3, name: 'Bread',         status: 'pending' },
+  { id: 4, name: 'Butter',        status: 'pending' },
+  { id: 5, name: 'Orange juice',  status: 'pending' },
+  { id: 6, name: 'Tea',           status: 'pending' } // مثال جديد
+];
 
-const taskSchema = new mongoose.Schema({
-  id: Number,
-  name: String,
-  status: String,
-});
-
-const Task = mongoose.model('Task', taskSchema);
-
-// Seed database if empty
-Task.countDocuments().then(count => {
-  if (count === 0) {
-    Task.insertMany([
-      { id: 1, name: 'Milk', status: 'done' },
-      { id: 2, name: 'Eggs', status: 'done' },
-      { id: 3, name: 'Bread', status: 'pending' },
-      { id: 4, name: 'Butter', status: 'pending' },
-      { id: 5, name: 'Orange juice', status: 'pending' },
-    ]);
-  }
-});
-
-// Routes
+// Route 1: basic info
 app.get('/', (req, res) => {
   res.json({
-    app: 'CISC 886 Lab 8 – MongoDB version',
+    app:  'CISC 886 Lab 8',
+    mode: process.env.MODE || 'local',
     node: process.version,
     host: os.hostname(),
   });
 });
 
-app.get('/tasks', async (req, res) => {
-  const tasks = await Task.find({});
-  const grouped = tasks.reduce((acc, t) => {
-    (acc[t.status] ||= []).push(t);
+// Route 2: tasks grouped by status
+app.get('/tasks', (req, res) => {
+  // Node 18 لا يدعم Object.groupBy → استخدمنا reduce
+  const grouped = tasks.reduce((acc, task) => {
+    (acc[task.status] = acc[task.status] || []).push(task);
     return acc;
   }, {});
   res.json(grouped);
 });
 
-app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
+// Start server
+app.listen(PORT, () => {
+  console.log('--------------------------------------------------');
+  console.log(`  CISC 886 Lab 8 — App started`);
+  console.log(`  Port:  ${PORT}`);
+  console.log(`  Mode:  ${process.env.MODE || 'local'}`);
+  console.log(`  Node:  ${process.version}`);
+  console.log(`  Host:  ${os.hostname()}`);
+  console.log('--------------------------------------------------');
+});
