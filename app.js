@@ -11,7 +11,8 @@ const tasks = [
   { id: 3, name: 'Bread',         status: 'pending' },
   { id: 4, name: 'Butter',        status: 'pending' },
   { id: 5, name: 'Orange juice',  status: 'pending' },
-  { id: 6, name: 'Tea',           status: 'pending' } // مثال جديد
+  { id: 6, name: 'Tea',           status: 'pending' } // مثال جديد 
+{ id: 7, name: 'Tea', status: 'pending' }
 ];
 
 // Route 1: basic info
