@@ -1,49 +1,85 @@
-# Lab 8 – CI/CD Multi-Container Deployment
+#  CI/CD Multi-Container Deployment with Docker Compose
 
-This project demonstrates a CI/CD pipeline that deploys a multi-container application using Docker Compose on AWS EC2.
+This project demonstrates a real-world CI/CD pipeline for deploying a multi-container Node.js application using Docker Compose on AWS EC2.
+
+Any change pushed to GitHub is automatically built, pushed to Docker Hub, and deployed to the server without manual intervention.
+
+---
+
+## Project Overview
+
+This project deploys a Node.js REST API connected to a MongoDB database using Docker Compose.
+
+Both services run in separate containers and are orchestrated using Docker Compose. The deployment process is fully automated using GitHub Actions and AWS EC2.
+
+---
 
 ## Architecture
 
-* Node.js Application
-* MongoDB Database
+GitHub → GitHub Actions → Docker Hub → AWS EC2 → Docker Compose → App + MongoDB
+
+---
+
+##  Tech Stack
+
+* Node.js
+* MongoDB
+* Docker
 * Docker Compose
-* GitHub Actions CI/CD
+* GitHub Actions
 * Docker Hub
 * AWS EC2
+* CI/CD Pipeline
 
-## Workflow
+---
 
-1. Push code to GitHub
+##  CI/CD Workflow
+
+1. Developer pushes code to GitHub
 2. GitHub Actions builds Docker image
 3. Image pushed to Docker Hub
 4. EC2 pulls latest image
-5. Docker Compose deploys full stack
+5. Docker Compose redeploys full stack
+6. Application updated automatically
 
-## Docker Compose Services
+---
 
-* app (Node.js)
-* mongo (MongoDB)
+##  Docker Compose Services
 
-The app container connects to MongoDB using service name as hostname.
+Two containers are deployed:
 
-## CI/CD Deployment
+* app → Node.js API
+* mongo → MongoDB database
 
-Pipeline steps:
+The app container connects to MongoDB using the Docker Compose service name as hostname.
 
-* git pull
-* docker compose pull
-* docker compose down
-* docker compose up -d
+---
 
-## Test
+##  Automated Deployment
+
+The CI/CD pipeline executes:
+
+git pull
+docker compose pull
+docker compose down
+docker compose up -d
+
+---
+
+##  Testing
 
 curl http://localhost:3000/tasks
 
-## Skills Demonstrated
+The response returns tasks from MongoDB, confirming both containers are working.
 
-* Docker Compose
-* CI/CD pipeline
+---
+
+##  Skills Demonstrated
+
+* CI/CD pipeline design
+* Docker Compose multi-container deployment
 * AWS EC2 deployment
-* MongoDB container
-* Multi-container networking
-* GitHub Actions
+* MongoDB container integration
+* GitHub Actions automation
+* Docker Hub image registry
+* Container networking
