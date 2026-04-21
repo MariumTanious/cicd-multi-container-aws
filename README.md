@@ -6,7 +6,7 @@ Any change pushed to GitHub is automatically built, pushed to Docker Hub, and de
 
 ---
 
-## Project Overview
+##  Project Overview
 
 This project deploys a Node.js REST API connected to a MongoDB database using Docker Compose.
 
@@ -14,7 +14,7 @@ Both services run in separate containers and are orchestrated using Docker Compo
 
 ---
 
-## Architecture
+##  Architecture
 
 GitHub → GitHub Actions → Docker Hub → AWS EC2 → Docker Compose → App + MongoDB
 
@@ -37,49 +37,36 @@ GitHub → GitHub Actions → Docker Hub → AWS EC2 → Docker Compose → App 
 
 1. Developer pushes code to GitHub
 2. GitHub Actions builds Docker image
-3. Image pushed to Docker Hub
-4. EC2 pulls latest image
-5. Docker Compose redeploys full stack
-6. Application updated automatically
+3. Image is pushed to Docker Hub
+4. AWS EC2 pulls latest image
+5. Docker Compose redeploys the full stack
+6. Application is updated automatically
 
 ---
 
 ##  Docker Compose Services
 
-Two containers are deployed:
+* **app** → Node.js REST API
+* **mongo** → MongoDB database
 
-* app → Node.js API
-* mongo → MongoDB database
-
-The app container connects to MongoDB using the Docker Compose service name as hostname.
+The app connects to MongoDB using the service name as hostname.
 
 ---
 
-##  Automated Deployment
-
-The CI/CD pipeline executes:
-
-git pull
-docker compose pull
-docker compose down
-docker compose up -d
-
----
-
-##  Testing
+## Testing
 
 curl http://localhost:3000/tasks
 
-The response returns tasks from MongoDB, confirming both containers are working.
+Returns tasks from MongoDB, confirming both containers are running successfully.
 
 ---
 
 ##  Skills Demonstrated
 
-* CI/CD pipeline design
-* Docker Compose multi-container deployment
+* CI/CD pipeline design and automation
+* Docker Compose multi-container architecture
 * AWS EC2 deployment
 * MongoDB container integration
-* GitHub Actions automation
+* GitHub Actions workflows
 * Docker Hub image registry
 * Container networking
